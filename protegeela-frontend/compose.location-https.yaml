@@ -1,0 +1,14 @@
+services:
+  location-https:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command:
+      - tunnel
+      - --no-autoupdate
+      - --url
+      - http://frontend:3000
+      - --allowed-mail
+      - ${TUNNEL_ALLOWED_EMAIL:?Defina TUNNEL_ALLOWED_EMAIL com seu e-mail para proteger o acesso HTTPS}
+    depends_on:
+      frontend:
+        condition: service_healthy
